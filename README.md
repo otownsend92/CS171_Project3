@@ -1,0 +1,2 @@
+# CS171_Project3
+A fully distributed multi-process multithreaded application that uses quorums to achieve read-write mutual exclusion of a shared resource between different sites. Each site is a separate multi-threaded process that will run on a separate AWS EC2 instance. The shared resource is a log, maintained by a separate process which also runs on its own EC2 instance. Communication between the sites and the shared resource process (log process) can only be done by message passing using TCP sockets.
