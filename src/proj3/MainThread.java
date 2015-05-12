@@ -1,4 +1,4 @@
-package proj2;
+package proj3;
 
 public class MainThread{
 	
