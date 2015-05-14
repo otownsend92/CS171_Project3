@@ -9,10 +9,15 @@ public class CLIThread extends Thread {
 	}
 
 	public void run() {
-		ReadFromSystemIn();
+		try {
+			ReadFromSystemIn();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void ReadFromSystemIn() {
+	public void ReadFromSystemIn() throws InterruptedException {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Printing the file passed in:");
 		while (sc.hasNextLine()) {
@@ -21,7 +26,7 @@ public class CLIThread extends Thread {
 		}
 	}
 
-	public void ParseInput(String input) {
+	public void ParseInput(String input) throws InterruptedException {
 		input += " ";
 
 		String command = input.substring(0, input.indexOf(' '));
@@ -41,11 +46,15 @@ public class CLIThread extends Thread {
 		}
 	}
 	
-	public void ReadFromLog() {
+	public void ReadFromLog() throws InterruptedException {
 		/*
 		 * Contact other sites to get quorum for read lock
 		 */
 		boolean hasLock = ObtainReadLock();
+		while (!hasLock) {
+			Thread.sleep(500);	// Sleep half a second then try again.
+			hasLock = ObtainReadLock();
+		}
 		
 		/*
 		 * Once quorum is achieved, contact log site with 
@@ -69,7 +78,20 @@ public class CLIThread extends Thread {
 		
 	}
 	
+	
+	/*
+	 * Contact three other sites to get permission for read lock.
+	 */
 	public boolean ObtainReadLock() {
+		/*
+		 * Open socket connection with three other sites.
+		 * For now, our quorum is just ourselves plus the two
+		 * sites with IDs myID+1 and myID+2
+		 */
+		
+		// Ask for read permission.
+		// If all 3 reply "YES READ", return true.
+		// If one of 3 replies "NO READ", return false
 		
 		return true;	// Remove later.
 	}
