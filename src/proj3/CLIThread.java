@@ -63,6 +63,11 @@ public class CLIThread extends Thread {
 		}
 	}
 	
+	
+	/*
+	 * Main method that initates read process from log.
+	 * Initiates quorum process, reads from log, and releases.
+	 */
 	public void ReadFromLog() throws InterruptedException, UnknownHostException, IOException {
 		/*
 		 * Contact other sites to get quorum for read lock
