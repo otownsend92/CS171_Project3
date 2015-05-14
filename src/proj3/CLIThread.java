@@ -135,7 +135,7 @@ public class CLIThread extends Thread {
 		Scanner socketIn 		= new Scanner(socket.getInputStream());
 		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 		
-		socketOut.println("RELEASE " + myID);
+		socketOut.println("RELEASE ");
 		
 		if (!socketIn.hasNext()) {
 			; // Do nothing.
@@ -185,7 +185,7 @@ public class CLIThread extends Thread {
 		Scanner socketIn 		= new Scanner(socket.getInputStream());
 		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 		
-		socketOut.println("SEND ME LOG " + quorum.get(0) + " " + quorum.get(1) + " " + quorum.get(2)); 
+		socketOut.println("SEND " + quorum.get(0) + quorum.get(1) + quorum.get(2) + myID); 
 		// Tell log you want log, include your site ID plus the two sites
 		// that gave you permission (your quorum).
 		
@@ -211,7 +211,7 @@ public class CLIThread extends Thread {
 		Socket socket 			= new Socket(logSiteIP, LOG_RECV_PORT);
 		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 		
-		socketOut.println("APPEND LOG " + quorum.get(0) + " " + quorum.get(1) + " " + quorum.get(2) + " " + message); 
+		socketOut.println("APPEND " + quorum.get(0) + quorum.get(1) + quorum.get(2) + myID + message); 
 		
 		socketOut.flush();
 		socketOut.close();
