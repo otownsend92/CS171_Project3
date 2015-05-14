@@ -78,6 +78,7 @@ public class LogThread extends Thread{
 		}
 		else if(command.equals("RELEASE")){
 			System.out.println("Site" + lock[4] + " releases " + lock[3] + " lock quorum " + lock[0] + ", " + lock[1] + " and " + lock[2]);
+			writer.println("ACK");
 		}
 	}
 }
