@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class CLIThread extends Thread {
 	
 	int RECV_PORT_NO = 3000;
+	int LOG_RECV_PORT = 3050;
 	
 	private int myID;
 	private String[] IpAddrs = {
@@ -18,6 +19,7 @@ public class CLIThread extends Thread {
 			"xxx.xxx.xxx.xxx",
 			"xxx.xxx.xxx.xxx",
 	};
+	private String logSiteIP = "xxx.xxx.xxx.xxx";
 
 	public CLIThread(int id) {
 		this.myID = id;
@@ -77,7 +79,8 @@ public class CLIThread extends Thread {
 		 * it to standard output.
 		 */
 		if (hasLock) {
-			
+			String currentLog = RequestReadFromLog();
+			System.out.println("Current log:\n"+currentLog);
 		}
 		
 		/*
@@ -91,6 +94,38 @@ public class CLIThread extends Thread {
 		 */
 		boolean released = ReleaseLock();
 		
+	}
+	
+	
+	/*
+	 * Request a copy of the log from log site.
+	 */
+	public String RequestReadFromLog() throws UnknownHostException, IOException {
+		String log 				= null;
+		Socket socket 			= new Socket(logSiteIP, LOG_RECV_PORT);
+		Scanner socketIn 		= new Scanner(socket.getInputStream());
+		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
+		
+		socketOut.println("SEND ME LOG " + myID + " " + myID+1 + " " + myID+2); 
+		// Tell log you want log, include your site ID plus the two sites
+		// that gave you permission (your quorum).
+		
+		if (!socketIn.hasNext()) {
+			; // Do nothing.
+		}
+		else {
+			log = socketIn.nextLine();
+		}
+		
+		/*
+		 * Close everything.
+		 */
+		socketOut.flush();
+		socketIn.close();
+		socketOut.close();
+		socket.close();
+		
+		return log;
 	}
 	
 	
