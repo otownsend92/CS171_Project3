@@ -61,6 +61,9 @@ public class CLIThread extends Thread {
 			if (message.length() > 140){
 				message = message.substring(0, 140);
 			}
+			else if(message.length() > 0){
+				message = message.substring(0, message.indexOf(" "));
+			}
 			System.out.println("Appending " + message + "$");
 			AppendToLog(message);
 		}
@@ -158,7 +161,7 @@ public class CLIThread extends Thread {
 		 * Send RELEASE to other sites in your quorum.
 		 */
 		for(int i : quorum) {
-			Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO+1);
+			Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
 			PrintWriter socketOutSite 	= new PrintWriter(socket.getOutputStream(), true);
 			
 			socketOut.println("RELEASE " + myID);
@@ -223,19 +226,13 @@ public class CLIThread extends Thread {
 		int count = 0; // want this to equal 3 for 3 sites agreeing
 		
 		/*
-		 * TODO: FIRST, mark your own lock object as 'reading'
-		 */
-		count++;	// I give myself permission.
-		
-		
-		/*
 		 * Open socket connection with three other sites.
 		 * For now, our quorum is just ourselves plus the two
 		 * random sites.
 		 */
 		for(int i : quorum) {
 			String answer 			= null;
-			Socket socket 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO+1);
+			Socket socket 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
 			Scanner socketIn 		= new Scanner(socket.getInputStream());
 			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 			
@@ -271,19 +268,13 @@ public class CLIThread extends Thread {
 		int count = 0; // want this to equal 3 for 3 sites agreeing
 		
 		/*
-		 * TODO: FIRST, mark your own lock object as 'reading'
-		 */
-		count++;	// I give myself permission.
-		
-		
-		/*
 		 * Open socket connection with three other sites.
 		 * For now, our quorum is just ourselves plus the two
 		 * random sites.
 		 */
 		for(int i : quorum) {
 			String answer 			= null;
-			Socket socket 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO+1);
+			Socket socket 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
 			Scanner socketIn 		= new Scanner(socket.getInputStream());
 			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 			

@@ -14,7 +14,7 @@ public class CommThread extends Thread{
 	private Socket socket;
 	private ArrayList<Integer> quorum;
 	private SiteLocks locks = new SiteLocks();
-	int RECV_PORT_NO = 3001;
+	int RECV_PORT_NO = 3000;
 
 	public CommThread(int siteNum, ArrayList<Integer> quorum){
 		this.isRunning = true;
@@ -54,8 +54,10 @@ public class CommThread extends Thread{
 	}
 	
 	private void ParseCommand(String cmd, PrintWriter writer){
+		int site;
 		if(cmd.substring(0, 7) == "RELEASE"){
-			locks.setLock(Integer.valueOf(cmd.substring(8, 9)), SiteLocks.UNLOCKED);
+			site = Integer.valueOf(cmd.substring(8, 9));
+			locks.setLock(site - 1, SiteLocks.UNLOCKED);
 		}
 		else if(cmd.substring(0, 9) == "READ LOCK"){
 			for(int i : quorum){
@@ -63,7 +65,8 @@ public class CommThread extends Thread{
 					return;
 				}
 			}
-			locks.setLock(Integer.valueOf(cmd.substring(11, 12)), SiteLocks.READ);
+			site = Integer.valueOf(cmd.substring(11, 12));
+			locks.setLock(site - 1, SiteLocks.READ);
 			writer.println("YES READ");
 		}
 		else if(cmd.substring(0, 10) == "WRITE LOCK"){
@@ -72,7 +75,8 @@ public class CommThread extends Thread{
 					return;
 				}
 			}
-			locks.setLock(Integer.valueOf(cmd.substring(12, 13)), SiteLocks.WRITE);
+			site = Integer.valueOf(cmd.substring(12, 13));
+			locks.setLock(site - 1, SiteLocks.WRITE);
 			writer.println("YES WRITE");
 		}
 	}
