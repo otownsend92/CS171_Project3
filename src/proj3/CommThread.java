@@ -47,7 +47,9 @@ public class CommThread extends Thread{
 				socketOut.flush();
 				socketIn.close();
 				socketOut.close();
-				socket.close();
+				if(close){
+					socket.close();
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,22 +67,28 @@ public class CommThread extends Thread{
 				if(r.getLock() == SiteLocks.READ){
 					for(int i : quorum){
 						if(locks.getLock(i) == SiteLocks.WRITE){
-							return false;
+							return true;
 						}
 					}
 					locks.setLock(r.getSite() - 1, SiteLocks.READ);
 					PrintWriter writer2 = new PrintWriter(r.getSocket().getOutputStream(), true);
 					writer2.println("YES READ");
+					writer2.close();
+					r.getSocket().close();
+					requests.removeFirst();
 				}
 				else if(r.getLock() == SiteLocks.WRITE){
 					for(int i : quorum){
 						if(locks.getLock(i) > SiteLocks.UNLOCKED){
-							return false;
+							return true;
 						}
 					}
 					locks.setLock(site - 1, SiteLocks.WRITE);
 					PrintWriter writer2 = new PrintWriter(r.getSocket().getOutputStream(), true);
 					writer2.println("YES WRITE");
+					writer2.close();
+					r.getSocket().close();
+					requests.removeFirst();
 				}
 			}
 		}
