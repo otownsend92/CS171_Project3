@@ -5,14 +5,16 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class CommThread extends Thread{
 	private boolean isRunning;
-//	private CLIThread parentThread;
+	//	private CLIThread parentThread;
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private ArrayList<Integer> quorum;
+	private LinkedList<LockRequest> requests = new LinkedList<LockRequest>();
 	private SiteLocks locks = new SiteLocks();
 	int RECV_PORT_NO = 3000;
 
@@ -39,9 +41,9 @@ public class CommThread extends Thread{
 				socket = serverSocket.accept();
 				Scanner socketIn 		= new Scanner(socket.getInputStream());
 				PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
-				
-				ParseCommand(socketIn.nextLine(), socketOut);
-				
+
+				boolean close = ParseCommand(socketIn.nextLine(), socketOut, socket);
+
 				socketOut.flush();
 				socketIn.close();
 				socketOut.close();
@@ -52,32 +54,58 @@ public class CommThread extends Thread{
 			}
 		}
 	}
-	
-	private void ParseCommand(String cmd, PrintWriter writer){
+
+	private boolean ParseCommand(String cmd, PrintWriter writer, Socket socket) throws IOException{
 		int site;
 		if(cmd.substring(0, 7) == "RELEASE"){
 			site = Integer.valueOf(cmd.substring(8, 9));
 			locks.setLock(site - 1, SiteLocks.UNLOCKED);
-		}
-		else if(cmd.substring(0, 9) == "READ LOCK"){
-			for(int i : quorum){
-				if(locks.getLock(i) == SiteLocks.WRITE){
-					return;
+			if(!requests.isEmpty()){
+				LockRequest r = requests.element();
+				if(r.getLock() == SiteLocks.READ){
+					for(int i : quorum){
+						if(locks.getLock(i) == SiteLocks.WRITE){
+							return false;
+						}
+					}
+					locks.setLock(r.getSite() - 1, SiteLocks.READ);
+					PrintWriter writer2 = new PrintWriter(r.getSocket().getOutputStream(), true);
+					writer2.println("YES READ");
+				}
+				else if(r.getLock() == SiteLocks.WRITE){
+					for(int i : quorum){
+						if(locks.getLock(i) > SiteLocks.UNLOCKED){
+							return false;
+						}
+					}
+					locks.setLock(site - 1, SiteLocks.WRITE);
+					PrintWriter writer2 = new PrintWriter(r.getSocket().getOutputStream(), true);
+					writer2.println("YES WRITE");
 				}
 			}
+		}
+		else if(cmd.substring(0, 9) == "READ LOCK"){
 			site = Integer.valueOf(cmd.substring(11, 12));
+			for(int i : quorum){
+				if(locks.getLock(i) == SiteLocks.WRITE){
+					requests.add(new LockRequest(SiteLocks.READ, site, socket));
+					return false;
+				}
+			}
 			locks.setLock(site - 1, SiteLocks.READ);
 			writer.println("YES READ");
 		}
 		else if(cmd.substring(0, 10) == "WRITE LOCK"){
+			site = Integer.valueOf(cmd.substring(12, 13));
 			for(int i : quorum){
 				if(locks.getLock(i) > SiteLocks.UNLOCKED){
-					return;
+					requests.add(new LockRequest(SiteLocks.WRITE, site, socket));
+					return false;
 				}
 			}
-			site = Integer.valueOf(cmd.substring(12, 13));
 			locks.setLock(site - 1, SiteLocks.WRITE);
 			writer.println("YES WRITE");
 		}
+		return true;
 	}
 }
