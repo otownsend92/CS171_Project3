@@ -85,15 +85,66 @@ public class CLIThread extends Thread {
 		
 		/*
 		 * After printing, release lock:
-		 * 	1.	Site sends release message to log process.
-		 * 	2.	Log process prints release message in standard output
-		 * 	3.	Log process replies back to site process with an ack
-		 * 		message.
-		 * 	4.	Upon receiving ack from log, site sends release message
-		 * 		to all sites of quorum.
 		 */
 		boolean released = ReleaseLock();
+		if (!released) {
+			System.out.println("Couldn't release read lock.");
+		}
+	}
+	
+	
+	/*
+	 * 	1.	Site sends release message to log process.
+	 *	2.	Log process prints release message in standard output	 
+	 * 	3.	Log process replies back to site process with an ack
+	 * 		message.
+	 * 	4.	Upon receiving ack from log, site sends release message
+	 * 		to all sites of quorum.
+	 */
+	public boolean ReleaseLock() throws UnknownHostException, IOException {
+		String rel 				= null;
+		Socket socket 			= new Socket(logSiteIP, LOG_RECV_PORT);
+		Scanner socketIn 		= new Scanner(socket.getInputStream());
+		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 		
+		socketOut.println("RELEASE " + myID);
+		
+		if (!socketIn.hasNext()) {
+			; // Do nothing.
+		}
+		else {
+			rel = socketIn.nextLine();
+			if(!rel.equals("ACK")) {
+				socketIn.close();
+				socket.close();
+				return false;
+			}
+		}
+		
+		/*
+		 * Close everything.
+		 */
+		socketOut.flush();
+		socketIn.close();
+		socketOut.close();
+		socket.close();
+		
+		/*
+		 * Send RELEASE to other sites in your quorum.
+		 */
+		for(int i = 1; i < 3; i++) {
+			Socket siteSock 			= new Socket(IpAddrs[myID+i], RECV_PORT_NO+1);
+			PrintWriter socketOutSite 	= new PrintWriter(socket.getOutputStream(), true);
+			
+			socketOut.println("RELEASE " + myID);
+			
+			// Close.
+			socketOutSite.flush();
+			socketOutSite.close();
+			siteSock.close();
+		}
+		
+		return true;
 	}
 	
 	
@@ -146,8 +197,7 @@ public class CLIThread extends Thread {
 		 * For now, our quorum is just ourselves plus the two
 		 * sites with IDs myID+1 and myID+2
 		 */
-		int i = 0;
-		while (i < 3) {
+		for(int i = 1; i < 3; i++) {
 			String answer 			= null;
 			Socket socket 			= new Socket(IpAddrs[myID+i], RECV_PORT_NO+1);
 			Scanner socketIn 		= new Scanner(socket.getInputStream());
@@ -181,9 +231,5 @@ public class CLIThread extends Thread {
 		
 	}
 	
-	public boolean ReleaseLock() {
-		
-		return true;	// Remove later.
-	}
 
 }
