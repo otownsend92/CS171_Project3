@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLIThread extends Thread {
 	
 	int RECV_PORT_NO = 3000;
 	int LOG_RECV_PORT = 3050;
-	
+	ArrayList<Integer> quorum;
 	private int myID;
 	private String[] IpAddrs = {
 			"xxx.xxx.xxx.xxx",
@@ -21,8 +22,9 @@ public class CLIThread extends Thread {
 	};
 	private String logSiteIP = "xxx.xxx.xxx.xxx";
 
-	public CLIThread(int id) {
+	public CLIThread(int id, ArrayList<Integer> quorum) {
 		this.myID = id;
+		this.quorum = quorum;
 	}
 
 	public void run() {
@@ -41,6 +43,7 @@ public class CLIThread extends Thread {
 			String input = sc.nextLine();
 			ParseInput(input);
 		}
+		sc.close();
 	}
 
 	public void ParseInput(String input) throws InterruptedException, UnknownHostException, IOException {
@@ -55,11 +58,11 @@ public class CLIThread extends Thread {
 		}
 		
 		else if (command.equals("Append")) {
-			if (message.length() > 0
-					&& message.charAt(message.length() - 1) == ' ') {
-				message = message.substring(0, message.length() - 1);
+			if (message.length() > 140){
+				message = message.substring(0, 140);
 			}
 			System.out.println("Appending " + message + "$");
+			AppendToLog(message);
 		}
 	}
 	
@@ -91,6 +94,23 @@ public class CLIThread extends Thread {
 		/*
 		 * After printing, release lock:
 		 */
+		boolean released = ReleaseLock();
+		if (!released) {
+			System.out.println("Couldn't release read lock.");
+		}
+	}
+	
+	public void AppendToLog(String message) throws InterruptedException, UnknownHostException, IOException {
+		boolean hasLock = ObtainWriteLock();
+		while(!hasLock){
+			Thread.sleep(500);
+			hasLock = ObtainWriteLock();
+		}
+		
+		if(hasLock){
+			RequestAppendToLog(message);
+		}
+		
 		boolean released = ReleaseLock();
 		if (!released) {
 			System.out.println("Couldn't release read lock.");
@@ -137,8 +157,8 @@ public class CLIThread extends Thread {
 		/*
 		 * Send RELEASE to other sites in your quorum.
 		 */
-		for(int i = 1; i < 3; i++) {
-			Socket siteSock 			= new Socket(IpAddrs[myID+i], RECV_PORT_NO+1);
+		for(int i : quorum) {
+			Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO+1);
 			PrintWriter socketOutSite 	= new PrintWriter(socket.getOutputStream(), true);
 			
 			socketOut.println("RELEASE " + myID);
@@ -162,7 +182,7 @@ public class CLIThread extends Thread {
 		Scanner socketIn 		= new Scanner(socket.getInputStream());
 		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 		
-		socketOut.println("SEND ME LOG " + myID + " " + myID+1 + " " + myID+2); 
+		socketOut.println("SEND ME LOG " + quorum.get(0) + " " + quorum.get(1) + " " + quorum.get(2)); 
 		// Tell log you want log, include your site ID plus the two sites
 		// that gave you permission (your quorum).
 		
@@ -184,6 +204,17 @@ public class CLIThread extends Thread {
 		return log;
 	}
 	
+	public void RequestAppendToLog(String message) throws UnknownHostException, IOException {
+		Socket socket 			= new Socket(logSiteIP, LOG_RECV_PORT);
+		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
+		
+		socketOut.println("APPEND LOG " + quorum.get(0) + " " + quorum.get(1) + " " + quorum.get(2) + " " + message); 
+		
+		socketOut.flush();
+		socketOut.close();
+		socket.close();
+	}
+	
 	
 	/*
 	 * Contact three other sites to get permission for read lock.
@@ -200,11 +231,11 @@ public class CLIThread extends Thread {
 		/*
 		 * Open socket connection with three other sites.
 		 * For now, our quorum is just ourselves plus the two
-		 * sites with IDs myID+1 and myID+2
+		 * random sites.
 		 */
-		for(int i = 1; i < 3; i++) {
+		for(int i : quorum) {
 			String answer 			= null;
-			Socket socket 			= new Socket(IpAddrs[myID+i], RECV_PORT_NO+1);
+			Socket socket 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO+1);
 			Scanner socketIn 		= new Scanner(socket.getInputStream());
 			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 			
@@ -216,6 +247,54 @@ public class CLIThread extends Thread {
 			else {
 				answer = socketIn.nextLine();
 				if (answer.equals("YES READ")) {
+					count++;
+				}
+			}
+			
+			/*
+			 * Close everything.
+			 */
+			socketOut.flush();
+			socketIn.close();
+			socketOut.close();
+			socket.close();
+		}
+		
+		if (count != 3)
+			return false;
+		else
+			return true;
+		
+	}
+	
+	public boolean ObtainWriteLock() throws UnknownHostException, IOException {
+		int count = 0; // want this to equal 3 for 3 sites agreeing
+		
+		/*
+		 * TODO: FIRST, mark your own lock object as 'reading'
+		 */
+		count++;	// I give myself permission.
+		
+		
+		/*
+		 * Open socket connection with three other sites.
+		 * For now, our quorum is just ourselves plus the two
+		 * random sites.
+		 */
+		for(int i : quorum) {
+			String answer 			= null;
+			Socket socket 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO+1);
+			Scanner socketIn 		= new Scanner(socket.getInputStream());
+			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
+			
+			socketOut.println("WRITE LOCK " + myID); 	// Say you want a read lock
+														// and include your site ID
+			if (!socketIn.hasNext()) {
+				; // Do nothing.
+			}
+			else {
+				answer = socketIn.nextLine();
+				if (answer.equals("YES WRITE")) {
 					count++;
 				}
 			}
