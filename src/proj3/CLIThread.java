@@ -1,23 +1,38 @@
 package proj3;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class CLIThread extends Thread {
+	
+	int RECV_PORT_NO = 3000;
+	
+	private int myID;
+	private String[] IpAddrs = {
+			"xxx.xxx.xxx.xxx",
+			"xxx.xxx.xxx.xxx",
+			"xxx.xxx.xxx.xxx",
+			"xxx.xxx.xxx.xxx",
+			"xxx.xxx.xxx.xxx",
+	};
 
-	public CLIThread() {
-
+	public CLIThread(int id) {
+		this.myID = id;
 	}
 
 	public void run() {
 		try {
 			ReadFromSystemIn();
-		} catch (InterruptedException e) {
+		} catch (InterruptedException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void ReadFromSystemIn() throws InterruptedException {
+	public void ReadFromSystemIn() throws InterruptedException, UnknownHostException, IOException {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Printing the file passed in:");
 		while (sc.hasNextLine()) {
@@ -26,7 +41,7 @@ public class CLIThread extends Thread {
 		}
 	}
 
-	public void ParseInput(String input) throws InterruptedException {
+	public void ParseInput(String input) throws InterruptedException, UnknownHostException, IOException {
 		input += " ";
 
 		String command = input.substring(0, input.indexOf(' '));
@@ -46,7 +61,7 @@ public class CLIThread extends Thread {
 		}
 	}
 	
-	public void ReadFromLog() throws InterruptedException {
+	public void ReadFromLog() throws InterruptedException, UnknownHostException, IOException {
 		/*
 		 * Contact other sites to get quorum for read lock
 		 */
@@ -82,18 +97,53 @@ public class CLIThread extends Thread {
 	/*
 	 * Contact three other sites to get permission for read lock.
 	 */
-	public boolean ObtainReadLock() {
+	public boolean ObtainReadLock() throws UnknownHostException, IOException {
+		int count = 0; // want this to equal 3 for 3 sites agreeing
+		
+		/*
+		 * TODO: FIRST, mark your own lock object as 'reading'
+		 */
+		count++;	// I give myself permission.
+		
+		
 		/*
 		 * Open socket connection with three other sites.
 		 * For now, our quorum is just ourselves plus the two
 		 * sites with IDs myID+1 and myID+2
 		 */
+		int i = 0;
+		while (i < 3) {
+			String answer 			= null;
+			Socket socket 			= new Socket(IpAddrs[myID+i], RECV_PORT_NO+1);
+			Scanner socketIn 		= new Scanner(socket.getInputStream());
+			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
+			
+			socketOut.println("READ LOCK " + myID); 	// Say you want a read lock
+														// and include your site ID
+			if (!socketIn.hasNext()) {
+				; // Do nothing.
+			}
+			else {
+				answer = socketIn.nextLine();
+				if (answer.equals("YES READ")) {
+					count++;
+				}
+			}
+			
+			/*
+			 * Close everything.
+			 */
+			socketOut.flush();
+			socketIn.close();
+			socketOut.close();
+			socket.close();
+		}
 		
-		// Ask for read permission.
-		// If all 3 reply "YES READ", return true.
-		// If one of 3 replies "NO READ", return false
+		if (count != 3)
+			return false;
+		else
+			return true;
 		
-		return true;	// Remove later.
 	}
 	
 	public boolean ReleaseLock() {

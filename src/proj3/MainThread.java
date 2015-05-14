@@ -7,14 +7,18 @@ public class MainThread{
 	
 	private Thread cliThread = new Thread();
 	
-	public MainThread(){
+	public MainThread(int id){
 		// Constructor
-		cliThread = new CLIThread();
+		cliThread = new CLIThread(id);
 		
 		cliThread.start();
 	}
 	
 	public static void main(String[] args){
-		MainThread t = new MainThread();
+		// Read from file and get side ID
+		// Pass ID to constructor for CLI thread to use
+		int ID = 1;
+		
+		MainThread t = new MainThread(ID);
 	}
 }
