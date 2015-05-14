@@ -29,6 +29,7 @@ public class CLIThread extends Thread {
 
 		if (command.equals("Read")) {
 			System.out.println("Reading!!");
+			ReadFromLog();
 		}
 		
 		else if (command.equals("Append")) {
@@ -38,6 +39,44 @@ public class CLIThread extends Thread {
 			}
 			System.out.println("Appending " + message + "$");
 		}
+	}
+	
+	public void ReadFromLog() {
+		/*
+		 * Contact other sites to get quorum for read lock
+		 */
+		boolean hasLock = ObtainReadLock();
+		
+		/*
+		 * Once quorum is achieved, contact log site with 
+		 * quorum info. Receive log from log site and print
+		 * it to standard output.
+		 */
+		if (hasLock) {
+			
+		}
+		
+		/*
+		 * After printing, release lock:
+		 * 	1.	Site sends release message to log process.
+		 * 	2.	Log process prints release message in standard output
+		 * 	3.	Log process replies back to site process with an ack
+		 * 		message.
+		 * 	4.	Upon receiving ack from log, site sends release message
+		 * 		to all sites of quorum.
+		 */
+		boolean released = ReleaseLock();
+		
+	}
+	
+	public boolean ObtainReadLock() {
+		
+		return true;	// Remove later.
+	}
+	
+	public boolean ReleaseLock() {
+		
+		return true;	// Remove later.
 	}
 
 }
