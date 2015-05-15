@@ -299,10 +299,14 @@ public class CLIThread extends Thread {
 			socket.close();
 		}
 		
-		if (count != 3)
+		if (count != 3){
+			System.out.println("No write lock.");
 			return false;
-		else
+		}
+		else{
+			System.out.println("Write lock.");
 			return true;
+		}
 		
 	}
 	
