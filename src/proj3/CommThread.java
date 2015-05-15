@@ -76,6 +76,7 @@ public class CommThread extends Thread{
 		if(cmd.substring(0, 7).equals("RELEASE")){
 			site = Integer.valueOf(cmd.substring(8, 9));
 			locks.setLock(site, SiteLocks.UNLOCKED);
+			System.out.println("Released " + String.valueOf(site));
 			if(!requests.isEmpty()){
 				LockRequest r = requests.element();
 				if(r.getLock() == SiteLocks.READ){
