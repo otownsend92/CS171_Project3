@@ -27,9 +27,9 @@ public class MainThread{
 				quorum.add(site);
 				i++;
 			}
-			cliThread = new CLIThread(id, quorum);
+			cliThread = new CLIThread(id, quorum.get(0), quorum.get(1), quorum.get(2));
 			cliThread.start();
-			commThread = new CommThread(id, quorum, addr);
+			commThread = new CommThread(id, quorum.get(0), quorum.get(1), quorum.get(2), addr);
 			commThread.start();
 		}
 		else {

@@ -21,9 +21,12 @@ public class CommThread extends Thread{
 	int RECV_PORT_NO = 3000;
 	public InetAddress privateIP;
 
-	public CommThread(int siteNum, ArrayList<Integer> quorum, String ip){
+	public CommThread(int siteNum, Integer i1, Integer i2, Integer i3, String ip){
 		this.isRunning = true;
-		this.quorum = quorum;
+		this.quorum = new ArrayList<Integer>();
+		quorum.add(i1);
+		quorum.add(i2);
+		quorum.add(i3);
 		try{
 			privateIP = InetAddress.getByName(ip);
 		}
