@@ -162,7 +162,7 @@ public class CLIThread extends Thread {
 			PrintWriter socketOutSite 	= new PrintWriter(siteSock.getOutputStream(), true);
 			
 			System.out.println("Release ME");
-			socketOut.println("RELEASE " + myID);
+			socketOut.println("RELEASE " + myID + "\n");
 			
 			// Close.
 			socketOutSite.flush();

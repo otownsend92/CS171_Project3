@@ -60,7 +60,7 @@ public class CommThread extends Thread{
 				socketOut.flush();
 				socketIn.close();
 				socketOut.close();
-				if(close){
+				if(close){			// ????????????????????
 					socket.close();
 				}
 			} catch (Exception e) {
