@@ -118,10 +118,12 @@ public class CommThread extends Thread{
 			for(int i : quorum){
 				if(locks.getLock(i) > SiteLocks.UNLOCKED){
 					requests.add(new LockRequest(SiteLocks.WRITE, site, socket));
+					System.out.println("Write Lock Not Granted");
 					return false;
 				}
 			}
 			locks.setLock(site - 1, SiteLocks.WRITE);
+			System.out.println("Write Lock Granted");
 			writer.println("YES WRITE");
 		}
 		return true;
