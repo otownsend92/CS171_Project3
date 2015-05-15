@@ -108,6 +108,7 @@ public class CLIThread extends Thread {
 		}
 		
 		if(hasLock){
+			System.out.println("We have a lock!");
 			RequestAppendToLog(message);
 		}
 		
@@ -238,6 +239,8 @@ public class CLIThread extends Thread {
 			while (!socketIn.hasNext()) {
 				; // Do nothing.
 			}
+			
+			System.out.println("Got Something");
 			
 			answer = socketIn.nextLine();
 			if (answer.equals("YES READ")) {
