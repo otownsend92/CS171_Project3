@@ -28,7 +28,7 @@ public class CommThread extends Thread{
 			privateIP = InetAddress.getByName(ip);
 		}
 		catch(UnknownHostException e){
-			
+
 		}
 		// parentThread = et;
 	}
@@ -47,13 +47,15 @@ public class CommThread extends Thread{
 		serverSocket = new ServerSocket(RECV_PORT_NO);
 		while (isRunning) {
 			try {
+				boolean close = true;
 				socket = serverSocket.accept();
 				Scanner socketIn 		= new Scanner(socket.getInputStream());
 				PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
-
-				String sockMsg = socketIn.nextLine();
-				System.out.println("sockMsg: " + sockMsg);
-				boolean close = ParseCommand(sockMsg, socketOut, socket);
+				if(socketIn.hasNext()){
+					String sockMsg = socketIn.nextLine();
+					System.out.println("sockMsg: " + sockMsg);
+					close = ParseCommand(sockMsg, socketOut, socket);
+				}
 
 				socketOut.flush();
 				socketIn.close();
