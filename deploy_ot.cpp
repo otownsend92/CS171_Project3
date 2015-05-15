@@ -35,59 +35,71 @@ int main(void) {
   static const string address[] = {
       "54.84.106.22",   // N virginia           YogiBear1
       "52.8.114.154",   // N California         YogiBear2
-      "52.17.225.122",  // Ireland (log site)   YogiBear6
+      "54.66.200.133",  // Sydney               YogiBear3
       "52.74.22.123",   // Singapore            YogiBear4
-      "54.207.93.174"   // Sao Paulo            YogiBear5
+      "54.207.93.174",  // Sao Paulo            YogiBear5
+      "52.17.225.122"   // Ireland (log site)   YogiBear6
+      
   };
 
   // scp -r -i ~/Desktop/turtlebeards.pem ~/Dropbox/Current\ Documents/cs271/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@54.174.167.183:/home/ec2-user/                           
   //for(int i = 0; i < 5; i++) {
-  string cmd = "scp -r -i ~/Desktop/turtlebeards.pem /Users/olivertownsend/NetBeansProjects/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@"+address[0]+":/home/ec2-user/";
+  string cmd = "scp -r -i ~/Desktop/Pem_Keys/YogiBearKey_Virginia.pem /Users/olivertownsend/Documents/Classes/4.\ Senior\ Year/3.\ Spring/171/project3/CS171_Project3/Project3.jar ubuntu@"+address[0];
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   string result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/turtlebeards.pem ec2-user@"+address[0]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Virginia.pem ec2-user@"+address[0]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
     
-  cmd = "scp -r -i ~/Desktop/turtlebeards_california.pem /Users/olivertownsend/NetBeansProjects/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@"+address[1]+":/home/ec2-user/";
+  cmd = "scp -r -i ~/Desktop/Pem_Keys/YogiBearKey_California.pem /Users/olivertownsend/Documents/Classes/4.\ Senior\ Year/3.\ Spring/171/project3/CS171_Project3/Project3.jar ubuntu@"+address[1];
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/turtlebeards_california.pem ec2-user@"+address[1]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_California.pem ec2-user@"+address[1]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
     
-  cmd = "scp -r -i ~/Desktop/turtlebeards_ireland.pem /Users/olivertownsend/NetBeansProjects/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@"+address[2]+":/home/ec2-user/";
+  cmd = "scp -r -i ~/Desktop/Pem_Keys/YogiBearKey_Sydney.pem /Users/olivertownsend/Documents/Classes/4.\ Senior\ Year/3.\ Spring/171/project3/CS171_Project3/Project3.jar ubuntu@"+address[2];
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/turtlebeards_ireland.pem ec2-user@"+address[2]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Sydney.pem ec2-user@"+address[2]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
     
-  cmd = "scp -r -i ~/Desktop/turtlebeards_singapore.pem /Users/olivertownsend/NetBeansProjects/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@"+address[3]+":/home/ec2-user/";
+  cmd = "scp -r -i ~/Desktop/Pem_Keys/YogiBearKey_Singapore.pem /Users/olivertownsend/Documents/Classes/4.\ Senior\ Year/3.\ Spring/171/project3/CS171_Project3/Project3.jar ubuntu@"+address[3];
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/turtlebeards_singapore.pem ec2-user@"+address[3]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Singapore.pem ec2-user@"+address[3]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
     
-  cmd = "scp -r -i ~/Desktop/turtlebeards_saopaulo.pem /Users/olivertownsend/NetBeansProjects/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@"+address[4]+":/home/ec2-user/";
+  cmd = "scp -r -i ~/Desktop/Pem_Keys/YogiBearKey_SaoPaolo.pem /Users/olivertownsend/Documents/Classes/4.\ Senior\ Year/3.\ Spring/171/project3/CS171_Project3/Project3.jar ubuntu@"+address[4];
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/turtlebeards_saopaulo.pem ec2-user@"+address[4]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_SaoPaolo.pem ec2-user@"+address[4]+" 'rm log.txt'";
+  cout.write(cmd.c_str(), strlen(cmd.c_str()));
+  cout.put('\n');
+  result = exec(cmd.c_str());
+
+  cmd = "scp -r -i ~/Desktop/Pem_Keys/YogiBearKey_Ireland.pem /Users/olivertownsend/Documents/Classes/4.\ Senior\ Year/3.\ Spring/171/project3/CS171_Project3/Project3.jar ubuntu@"+address[5];
+  cout.write(cmd.c_str(), strlen(cmd.c_str()));
+  cout.put('\n');
+  result = exec(cmd.c_str());
+  cout << "> DELETING LOGS" << endl;
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Ireland.pem ec2-user@"+address[5]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
