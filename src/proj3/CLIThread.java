@@ -165,7 +165,7 @@ public class CLIThread extends Thread {
 			PrintWriter socketOutSite 	= new PrintWriter(siteSock.getOutputStream(), true);
 
 			System.out.println("Release ME");
-			socketOut.println("RELEASE " + myID);
+			socketOutSite.println("RELEASE " + myID);
 
 			// Close.
 			socketOutSite.flush();
@@ -174,6 +174,19 @@ public class CLIThread extends Thread {
 		}
 
 		return true;
+	}
+	
+	public void ReleaseLite(int i) throws IOException{
+		Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
+		PrintWriter socketOutSite 	= new PrintWriter(siteSock.getOutputStream(), true);
+
+
+		socketOutSite.println("RELEASE " + myID);
+
+		// Close.
+		socketOutSite.flush();
+		socketOutSite.close();
+		siteSock.close();
 	}
 
 
@@ -232,7 +245,7 @@ public class CLIThread extends Thread {
 	 */
 	public boolean ObtainReadLock() throws UnknownHostException, IOException {
 		int count = 0; // want this to equal 3 for 3 sites agreeing
-
+		ArrayList<Integer> has = new ArrayList<Integer>();
 		/*
 		 * Open socket connection with three other sites.
 		 * For now, our quorum is just ourselves plus the two
@@ -255,6 +268,7 @@ public class CLIThread extends Thread {
 			answer = socketIn.nextLine();
 			if (answer.equals("YES READ")) {
 				count++;
+				has.add(i);
 			}
 
 
@@ -267,8 +281,12 @@ public class CLIThread extends Thread {
 			socket.close();
 		}
 
-		if (count != 3)
+		if (count != 3){
+			for(int i : has){
+				ReleaseLite(i);
+			}
 			return false;
+		}
 		else
 			return true;
 
@@ -276,7 +294,7 @@ public class CLIThread extends Thread {
 
 	public boolean ObtainWriteLock() throws UnknownHostException, IOException {
 		int count = 0; // want this to equal 3 for 3 sites agreeing
-
+		ArrayList<Integer> has = new ArrayList<Integer>();
 		/*
 		 * Open socket connection with three other sites.
 		 * For now, our quorum is just ourselves plus the two
@@ -301,6 +319,7 @@ public class CLIThread extends Thread {
 			System.out.println("Answer is :" + answer);
 			if (answer.equals("YES WRITE")) {
 				count++;
+				has.add(i);
 			}
 
 
@@ -315,6 +334,9 @@ public class CLIThread extends Thread {
 
 		if (count != 3){
 			System.out.println("No write lock.");
+			for(int i : has){
+				ReleaseLite(i);
+			}
 			return false;
 		}
 		else{
