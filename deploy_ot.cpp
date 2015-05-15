@@ -48,8 +48,8 @@ int main(void) {
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   string result = exec(cmd.c_str());
-  // cout << "> DELETING LOGS" << endl;
-  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Virginia.pem ubuntu@"+address[0];
+  // cout << "> STARTING INSTANCE" << endl;
+  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Virginia.pem ubuntu@"+address[0]+" java -jar Project3.jar";
   // cout.write(cmd.c_str(), strlen(cmd.c_str()));
   // cout.put('\n');
   // result = exec(cmd.c_str());
@@ -58,8 +58,8 @@ int main(void) {
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
-  // cout << "> DELETING LOGS" << endl;
-  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_California.pem ubuntu@"+address[1];
+  // cout << "> STARTING INSTANCE" << endl;
+  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_California.pem ubuntu@"+address[1]+" java -jar Project3.jar";
   // cout.write(cmd.c_str(), strlen(cmd.c_str()));
   // cout.put('\n');
   // result = exec(cmd.c_str());
@@ -68,8 +68,8 @@ int main(void) {
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
-  // cout << "> DELETING LOGS" << endl;
-  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Sydney.pem ubuntu@"+address[2];
+  // cout << "> STARTING INSTANCE" << endl;
+  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Sydney.pem ubuntu@"+address[2]+" java -jar Project3.jar";
   // cout.write(cmd.c_str(), strlen(cmd.c_str()));
   // cout.put('\n');
   // result = exec(cmd.c_str());
@@ -78,8 +78,8 @@ int main(void) {
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
-  // cout << "> DELETING LOGS" << endl;
-  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Singapore.pem ubuntu@"+address[3];
+  // cout << "> STARTING INSTANCE" << endl;
+  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Singapore.pem ubuntu@"+address[3]+" java -jar Project3.jar";
   // cout.write(cmd.c_str(), strlen(cmd.c_str()));
   // cout.put('\n');
   // result = exec(cmd.c_str());
@@ -88,8 +88,8 @@ int main(void) {
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
-  // cout << "> DELETING LOGS" << endl;
-  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_SaoPaolo.pem ubuntu@"+address[4];
+  // cout << "> STARTING INSTANCE" << endl;
+  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_SaoPaolo.pem ubuntu@"+address[4]+" java -jar Project3.jar";
   // cout.write(cmd.c_str(), strlen(cmd.c_str()));
   // cout.put('\n');
   // result = exec(cmd.c_str());
@@ -98,8 +98,8 @@ int main(void) {
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
-  // cout << "> DELETING LOGS" << endl;
-  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Ireland.pem ubuntu@"+address[5];
+  // cout << "> STARTING INSTANCE" << endl;
+  // cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Ireland.pem ubuntu@"+address[5]+" java -jar Project3.jar";
   // cout.write(cmd.c_str(), strlen(cmd.c_str()));
   // cout.put('\n');
   // result = exec(cmd.c_str());

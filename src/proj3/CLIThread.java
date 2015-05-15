@@ -72,12 +72,14 @@ public class CLIThread extends Thread {
 		/*
 		 * Contact other sites to get quorum for read lock
 		 */
+		System.out.println("ReadFromLog");
 		boolean hasLock = ObtainReadLock();
 		while (!hasLock) {
 			Thread.sleep(500);	// Sleep half a second then try again.
 			hasLock = ObtainReadLock();
 		}
 		
+		System.out.println("Quorum");
 		/*
 		 * Once quorum is achieved, contact log site with 
 		 * quorum info. Receive log from log site and print
@@ -88,6 +90,7 @@ public class CLIThread extends Thread {
 			System.out.println("Current log:\n"+currentLog);
 		}
 		
+		System.out.println("Releasing");
 		/*
 		 * After printing, release lock:
 		 */
@@ -232,15 +235,15 @@ public class CLIThread extends Thread {
 			
 			socketOut.println("READ LOCK " + myID); 	// Say you want a read lock
 														// and include your site ID
-			if (!socketIn.hasNext()) {
+			while (!socketIn.hasNext()) {
 				; // Do nothing.
 			}
-			else {
-				answer = socketIn.nextLine();
-				if (answer.equals("YES READ")) {
-					count++;
-				}
+			
+			answer = socketIn.nextLine();
+			if (answer.equals("YES READ")) {
+				count++;
 			}
+			
 			
 			/*
 			 * Close everything.
@@ -274,15 +277,15 @@ public class CLIThread extends Thread {
 			
 			socketOut.println("WRITE LOCK " + myID); 	// Say you want a read lock
 														// and include your site ID
-			if (!socketIn.hasNext()) {
+			while (!socketIn.hasNext()) {
 				; // Do nothing.
 			}
-			else {
-				answer = socketIn.nextLine();
-				if (answer.equals("YES WRITE")) {
-					count++;
-				}
+			
+			answer = socketIn.nextLine();
+			if (answer.equals("YES WRITE")) {
+				count++;
 			}
+			
 			
 			/*
 			 * Close everything.
