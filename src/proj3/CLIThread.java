@@ -14,7 +14,7 @@ public class CLIThread extends Thread {
 	ArrayList<Integer> quorum;
 	private int myID;
 	public static String[] IpAddrs = new String[5];
-	private String logSiteIP = new String();
+	public static String logSiteIP = new String();
 
 	public CLIThread(int id, ArrayList<Integer> quorum) {
 		this.myID = id;
