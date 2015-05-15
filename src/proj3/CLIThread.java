@@ -116,6 +116,7 @@ public class CLIThread extends Thread {
 		if (!released) {
 			//System.out.println("Couldn't release read lock.");
 		}
+//		System.out.println("")
 	}
 
 
@@ -233,6 +234,7 @@ public class CLIThread extends Thread {
 		}
 
 		String ack = socketIn.nextLine();
+		System.out.println(ack);
 
 		socketOut.flush();
 		socketOut.close();
@@ -243,7 +245,7 @@ public class CLIThread extends Thread {
 	/*
 	 * Contact three other sites to get permission for read lock.
 	 */
-	public boolean ObtainReadLock() throws UnknownHostException, IOException {
+	public boolean ObtainReadLock() throws UnknownHostException, IOException, InterruptedException {
 		int count = 0; // want this to equal 3 for 3 sites agreeing
 		ArrayList<Integer> has = new ArrayList<Integer>();
 		/*
@@ -257,6 +259,8 @@ public class CLIThread extends Thread {
 			Scanner socketIn 		= new Scanner(socket.getInputStream());
 			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 
+			int wait = MainThread.randInt(250, 500);
+			Thread.sleep(wait);
 			socketOut.println("READ LOCK " + myID); 	// Say you want a read lock
 			// and include your site ID
 			while (!socketIn.hasNext()) {
@@ -292,7 +296,7 @@ public class CLIThread extends Thread {
 
 	}
 
-	public boolean ObtainWriteLock() throws UnknownHostException, IOException {
+	public boolean ObtainWriteLock() throws UnknownHostException, IOException, InterruptedException {
 		int count = 0; // want this to equal 3 for 3 sites agreeing
 		ArrayList<Integer> has = new ArrayList<Integer>();
 		/*
@@ -306,6 +310,8 @@ public class CLIThread extends Thread {
 			Scanner socketIn 		= new Scanner(socket.getInputStream());
 			PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 
+			int wait = MainThread.randInt(250, 500);
+			Thread.sleep(wait);
 			socketOut.println("WRITE LOCK " + myID); 	// Say you want a read lock
 			// and include your site ID
 
