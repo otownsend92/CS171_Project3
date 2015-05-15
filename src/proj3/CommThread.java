@@ -53,7 +53,7 @@ public class CommThread extends Thread{
 
 				String sockMsg = socketIn.nextLine();
 				System.out.println("sockMsg: " + sockMsg);
-				boolean close = ParseCommand(socketIn.nextLine(), socketOut, socket);
+				boolean close = ParseCommand(sockMsg, socketOut, socket);
 
 				socketOut.flush();
 				socketIn.close();
