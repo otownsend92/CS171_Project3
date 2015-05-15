@@ -161,6 +161,7 @@ public class CLIThread extends Thread {
 			Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
 			PrintWriter socketOutSite 	= new PrintWriter(siteSock.getOutputStream(), true);
 			
+			System.out.println("Release ME");
 			socketOut.println("RELEASE " + myID);
 			
 			// Close.
