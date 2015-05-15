@@ -55,9 +55,6 @@ public class CLIThread extends Thread {
 			if (message.length() > 140){
 				message = message.substring(0, 140);
 			}
-			else if(message.length() > 0){
-				message = message.substring(0, message.indexOf(" "));
-			}
 			System.out.println("Appending " + message + "$");
 			AppendToLog(message);
 		}
