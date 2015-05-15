@@ -68,6 +68,7 @@ public class CommThread extends Thread{
 
 	private boolean ParseCommand(String cmd, PrintWriter writer, Socket socket) throws IOException{
 		int site;
+		System.out.println("Command is " + cmd);
 		if(cmd.substring(0, 7) == "RELEASE"){
 			site = Integer.valueOf(cmd.substring(8, 9));
 			locks.setLock(site - 1, SiteLocks.UNLOCKED);
