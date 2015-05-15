@@ -39,7 +39,7 @@ public class LogThread extends Thread{
 	}
 	
 	private void listen() throws IOException{
-		serverSocket = new ServerSocket(LOG_RECV_PORT, 100, privateIP);
+		serverSocket = new ServerSocket(LOG_RECV_PORT);
 		while(isRunning){
 			try {
 				socket = serverSocket.accept();

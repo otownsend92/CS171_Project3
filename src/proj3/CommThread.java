@@ -44,7 +44,7 @@ public class CommThread extends Thread{
 	}
 
 	private void listen() throws IOException{
-		serverSocket = new ServerSocket(RECV_PORT_NO, 100, privateIP);
+		serverSocket = new ServerSocket(RECV_PORT_NO);
 		while (isRunning) {
 			try {
 				socket = serverSocket.accept();
