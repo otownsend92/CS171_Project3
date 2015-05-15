@@ -88,6 +88,7 @@ public class MainThread{
 		site3 = site3.substring(0, site3.indexOf(' '));
 		site4 = site4.substring(0, site4.indexOf(' '));
 		site5 = site5.substring(0, site5.indexOf(' '));
+		log = log.substring(0, log.indexOf(' '));
 
 		br.close();
 		fr.close();
@@ -100,6 +101,7 @@ public class MainThread{
 		CLIThread.IpAddrs[2] = site3;
 		CLIThread.IpAddrs[3] = site4;
 		CLIThread.IpAddrs[4] = site5;
+		CLIThread.logSiteIP  = log;
 
 		//		System.out.println("CLIThread.IpAddrs[1] = " + CLIThread.IpAddrs[0]);
 		//		System.out.println("CLIThread.IpAddrs[2] = " + CLIThread.IpAddrs[1]);

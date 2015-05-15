@@ -15,6 +15,6 @@ public class SiteLocks {
 	}
 	
 	public int getLock(int site){
-		return sites[site];
+		return sites[site-1];
 	}
 }

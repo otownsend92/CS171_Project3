@@ -157,7 +157,7 @@ public class CLIThread extends Thread {
 		 */
 		for(int i : quorum) {
 			Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
-			PrintWriter socketOutSite 	= new PrintWriter(socket.getOutputStream(), true);
+			PrintWriter socketOutSite 	= new PrintWriter(siteSock.getOutputStream(), true);
 			
 			socketOut.println("RELEASE " + myID);
 			
