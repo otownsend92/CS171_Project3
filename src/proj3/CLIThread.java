@@ -58,6 +58,9 @@ public class CLIThread extends Thread {
 			if (message.length() > 140){
 				message = message.substring(0, 140);
 			}
+			if (message.length() > 0 && message.charAt(message.length()-1)=='x') {
+				message = message.substring(0, message.length()-1);
+			}
 			//System.out.println("Appending " + message + "$");
 			AppendToLog(message);
 		}
@@ -152,6 +155,19 @@ public class CLIThread extends Thread {
 		while (!socketIn.hasNext()) {
 			; // Do nothing.
 		}
+		
+//		int count2 = 0;
+//		boolean cont = true;
+//		while (!socketIn.hasNext()) {
+//			count2++; // Do nothing.
+//			if (count2 == 1000000){
+//				cont = false;
+//			}
+//		}
+		
+//		if(!cont){
+//			break;
+//		}
 
 		rel = socketIn.nextLine();
 		if(!rel.equals("ACK")) {
@@ -279,8 +295,9 @@ public class CLIThread extends Thread {
 			boolean cont = true;
 			while (!socketIn.hasNext()) {
 				count2++; // Do nothing.
-				if (count == 1000000){
+				if (count2 == 100000){
 					cont = false;
+					break;
 				}
 			}
 			
@@ -338,19 +355,26 @@ public class CLIThread extends Thread {
 
 			//System.out.println("Waiting for Response");
 
+			System.out.println("Going into loop...");
 			int count2 = 0;
 			boolean cont = true;
 			while (!socketIn.hasNext()) {
 				count2++; // Do nothing.
-				if (count == 1000000){
+				if (count2 == 100000){
+					System.out.println("count2 == 100000");
 					cont = false;
+					break;
 				}
 			}
 			
 			if(!cont){
+				System.out.println("Breaking");
 				break;
 			}
 
+			System.out.println("1count: " + count);
+			System.out.println("1count2: " + count2);
+			
 			answer = socketIn.nextLine();
 			//System.out.println("Answer is :" + answer);
 			if (answer.equals("YES WRITE")) {
@@ -358,7 +382,8 @@ public class CLIThread extends Thread {
 				has.add(i);
 			}
 
-
+			System.out.println("count: " + count);
+			System.out.println("count2: " + count2);
 			/*
 			 * Close everything.
 			 */

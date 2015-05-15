@@ -13,7 +13,7 @@ public class LogThread extends Thread{
 	private boolean isRunning;
 	private ArrayList<String> log = new ArrayList<String>();
 	private String[] lock = new String[5];
-	int LOG_RECV_PORT = 3050;
+	int LOG_RECV_PORT = 3010;
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private InetAddress privateIP;

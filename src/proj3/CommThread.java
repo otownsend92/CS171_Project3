@@ -18,7 +18,7 @@ public class CommThread extends Thread{
 	private ArrayList<Integer> quorum;
 	private LinkedList<LockRequest> requests = new LinkedList<LockRequest>();
 	private SiteLocks locks = new SiteLocks();
-	int RECV_PORT_NO = 3000;
+	int RECV_PORT_NO = 3030;
 	public InetAddress privateIP;
 
 	public CommThread(int siteNum, Integer i1, Integer i2, Integer i3, String ip){
