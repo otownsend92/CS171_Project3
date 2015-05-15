@@ -84,7 +84,7 @@ public class CommThread extends Thread{
 							return true;
 						}
 					}
-					locks.setLock(r.getSite() - 1, SiteLocks.READ);
+					locks.setLock(r.getSite(), SiteLocks.READ);
 					PrintWriter writer2 = new PrintWriter(r.getSocket().getOutputStream(), true);
 					writer2.println("YES READ");
 					writer2.close();
@@ -97,7 +97,7 @@ public class CommThread extends Thread{
 							return true;
 						}
 					}
-					locks.setLock(site - 1, SiteLocks.WRITE);
+					locks.setLock(site, SiteLocks.WRITE);
 					PrintWriter writer2 = new PrintWriter(r.getSocket().getOutputStream(), true);
 					writer2.println("YES WRITE");
 					writer2.close();
@@ -114,7 +114,7 @@ public class CommThread extends Thread{
 					return false;
 				}
 			}
-			locks.setLock(site - 1, SiteLocks.READ);
+			locks.setLock(site, SiteLocks.READ);
 			writer.println("YES READ");
 		}
 		else if(cmd.substring(0, 10).equals("WRITE LOCK")){
@@ -127,7 +127,7 @@ public class CommThread extends Thread{
 					return false;
 				}
 			}
-			locks.setLock(site - 1, SiteLocks.WRITE);
+			locks.setLock(site, SiteLocks.WRITE);
 			System.out.println("Write Lock Granted");
 			writer.println("YES WRITE");
 		}

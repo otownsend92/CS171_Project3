@@ -11,7 +11,7 @@ public class SiteLocks {
 	}
 	
 	public void setLock(int site, int value){
-		sites[site] = value;
+		sites[site-1] = value;
 	}
 	
 	public int getLock(int site){
