@@ -69,7 +69,7 @@ public class CommThread extends Thread{
 	private boolean ParseCommand(String cmd, PrintWriter writer, Socket socket) throws IOException{
 		int site;
 		System.out.println("Command is " + cmd);
-		if(cmd.substring(0, 7) == "RELEASE"){
+		if(cmd.substring(0, 7).equals("RELEASE")){
 			site = Integer.valueOf(cmd.substring(8, 9));
 			locks.setLock(site - 1, SiteLocks.UNLOCKED);
 			if(!requests.isEmpty()){
@@ -102,7 +102,7 @@ public class CommThread extends Thread{
 				}
 			}
 		}
-		else if(cmd.substring(0, 9) == "READ LOCK"){
+		else if(cmd.substring(0, 9).equals("READ LOCK")){
 			site = Integer.valueOf(cmd.substring(10, 11));
 			for(int i : quorum){
 				if(locks.getLock(i) == SiteLocks.WRITE){
@@ -113,7 +113,7 @@ public class CommThread extends Thread{
 			locks.setLock(site - 1, SiteLocks.READ);
 			writer.println("YES READ");
 		}
-		else if(cmd.substring(0, 10) == "WRITE LOCK"){
+		else if(cmd.substring(0, 10).equals("WRITE LOCK")){
 			System.out.println("Write Lock Attempt");
 			site = Integer.valueOf(cmd.substring(11, 12));
 			for(int i : quorum){
