@@ -2,8 +2,10 @@ package proj3;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,9 +16,16 @@ public class LogThread extends Thread{
 	int LOG_RECV_PORT = 3050;
 	private ServerSocket serverSocket;
 	private Socket socket;
+	private InetAddress privateIP;
 
-	public LogThread(){
+	public LogThread(String addr){
 		isRunning = true;
+		try{
+			privateIP = InetAddress.getByName(addr);
+		}
+		catch(UnknownHostException e){
+			
+		}
 	}
 
 	public void run(){
@@ -30,7 +39,7 @@ public class LogThread extends Thread{
 	}
 	
 	private void listen() throws IOException{
-		serverSocket = new ServerSocket(LOG_RECV_PORT);
+		serverSocket = new ServerSocket(LOG_RECV_PORT, 100, privateIP);
 		while(isRunning){
 			try {
 				socket = serverSocket.accept();
