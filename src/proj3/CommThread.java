@@ -114,6 +114,7 @@ public class CommThread extends Thread{
 			writer.println("YES READ");
 		}
 		else if(cmd.substring(0, 10) == "WRITE LOCK"){
+			System.out.println("Write Lock Attempt");
 			site = Integer.valueOf(cmd.substring(11, 12));
 			for(int i : quorum){
 				if(locks.getLock(i) > SiteLocks.UNLOCKED){
