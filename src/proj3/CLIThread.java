@@ -277,6 +277,9 @@ public class CLIThread extends Thread {
 			
 			socketOut.println("WRITE LOCK " + myID); 	// Say you want a read lock
 														// and include your site ID
+			
+			System.out.println("Waiting for Response");
+			
 			while (!socketIn.hasNext()) {
 				; // Do nothing.
 			}
