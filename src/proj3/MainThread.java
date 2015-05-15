@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,7 +13,7 @@ public class MainThread{
 	private Thread commThread = new Thread();
 	ArrayList<Integer> quorum = new ArrayList<Integer>();
 	
-	public MainThread(int id){
+	public MainThread(int id, String addr){
 		// Constructor
 		quorum.add(id);
 		int i = 1;
@@ -26,9 +27,8 @@ public class MainThread{
 		}
 		cliThread = new CLIThread(id, quorum);
 		cliThread.start();
-		commThread = new CommThread(id, quorum);
+		commThread = new CommThread(id, quorum, addr);
 		commThread.start();
-		
 	}
 	
 	public static int randInt(int min, int max) {
@@ -86,7 +86,7 @@ public class MainThread{
 		fr.close();
 		
 		// Pass ID to constructor for CLI thread to use
-		MainThread t = new MainThread(myID);
+		MainThread t = new MainThread(myID, privIP);
 		
 		CLIThread.IpAddrs[0] = site1;
 		CLIThread.IpAddrs[1] = site2;

@@ -2,8 +2,10 @@ package proj3;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -17,10 +19,17 @@ public class CommThread extends Thread{
 	private LinkedList<LockRequest> requests = new LinkedList<LockRequest>();
 	private SiteLocks locks = new SiteLocks();
 	int RECV_PORT_NO = 3000;
+	public InetAddress privateIP;
 
-	public CommThread(int siteNum, ArrayList<Integer> quorum){
+	public CommThread(int siteNum, ArrayList<Integer> quorum, String ip){
 		this.isRunning = true;
 		this.quorum = quorum;
+		try{
+			privateIP = InetAddress.getByName(ip);
+		}
+		catch(UnknownHostException e){
+			
+		}
 		// parentThread = et;
 	}
 
@@ -35,7 +44,7 @@ public class CommThread extends Thread{
 	}
 
 	private void listen() throws IOException{
-		serverSocket = new ServerSocket(RECV_PORT_NO);
+		serverSocket = new ServerSocket(RECV_PORT_NO, 100, privateIP);
 		while (isRunning) {
 			try {
 				socket = serverSocket.accept();
