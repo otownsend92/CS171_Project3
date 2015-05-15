@@ -74,9 +74,15 @@ public class CLIThread extends Thread {
 		 */
 		//System.out.println("ReadFromLog");
 		boolean hasLock = ObtainReadLock();
+		int count = 0;
 		while (!hasLock) {
 			Thread.sleep(500);	// Sleep half a second then try again.
 			hasLock = ObtainReadLock();
+			if(count > 5){
+				System.out.println("Request could not be completed!");
+				return;
+			}
+			count++;
 		}
 
 		//System.out.println("Quorum");
@@ -102,9 +108,15 @@ public class CLIThread extends Thread {
 
 	public void AppendToLog(String message) throws InterruptedException, UnknownHostException, IOException {
 		boolean hasLock = ObtainWriteLock();
+		int count = 0;
 		while(!hasLock){
 			Thread.sleep(500);
 			hasLock = ObtainWriteLock();
+			if(count > 5){
+				System.out.println("Request could not be completed!");
+				return;
+			}
+			count++;
 		}
 
 		if(hasLock){
