@@ -66,7 +66,7 @@ public class MainThread{
 		String path = "config.txt";
 		FileReader fr = new FileReader(path);
 		BufferedReader br = new BufferedReader(fr);
-
+		
 		int myID 		= Integer.parseInt(br.readLine());
 		String site1 	= br.readLine();
 		String site2 	= br.readLine();
@@ -76,14 +76,11 @@ public class MainThread{
 		String log 		= br.readLine();
 		String privIP 	= br.readLine();
 		
-		System.out.println("myID:   " + myID);
-		System.out.println("site1:  " + site1);
-		System.out.println("site2:  " + site2);
-		System.out.println("site3:  " + site3);
-		System.out.println("site4:  " + site4);
-		System.out.println("site5:  " + site5);
-		System.out.println("log:    " + log);
-		System.out.println("privIP: " + privIP);
+		site1 = site1.substring(0, site1.indexOf(' '));
+		site2 = site2.substring(0, site2.indexOf(' '));
+		site3 = site3.substring(0, site3.indexOf(' '));
+		site4 = site4.substring(0, site4.indexOf(' '));
+		site5 = site5.substring(0, site5.indexOf(' '));
 		
 		br.close();
 		fr.close();
@@ -96,6 +93,12 @@ public class MainThread{
 		CLIThread.IpAddrs[2] = site3;
 		CLIThread.IpAddrs[3] = site4;
 		CLIThread.IpAddrs[4] = site5;
+		
+//		System.out.println("CLIThread.IpAddrs[1] = " + CLIThread.IpAddrs[0]);
+//		System.out.println("CLIThread.IpAddrs[2] = " + CLIThread.IpAddrs[1]);
+//		System.out.println("CLIThread.IpAddrs[3] = " + CLIThread.IpAddrs[2]);
+//		System.out.println("CLIThread.IpAddrs[4] = " + CLIThread.IpAddrs[3]);
+//		System.out.println("CLIThread.IpAddrs[5] = " + CLIThread.IpAddrs[4]);
 	}
 
 }

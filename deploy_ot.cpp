@@ -33,11 +33,11 @@ int main(void) {
 
   // init addrs                                                                                                                                                                                    
   static const string address[] = {
-      "54.174.167.183",
-      "54.67.65.3",
-      "54.76.142.156",
-      "54.169.150.46",
-      "54.94.187.28"
+      "54.84.106.22",   // N virginia           YogiBear1
+      "52.8.114.154",   // N California         YogiBear2
+      "52.17.225.122",  // Ireland (log site)   YogiBear6
+      "52.74.22.123",   // Singapore            YogiBear4
+      "54.207.93.174"   // Sao Paulo            YogiBear5
   };
 
   // scp -r -i ~/Desktop/turtlebeards.pem ~/Dropbox/Current\ Documents/cs271/cs271_proj1_java/clientServer/dist/clientServer.jar ec2-user@54.174.167.183:/home/ec2-user/                           
