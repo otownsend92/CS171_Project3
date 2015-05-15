@@ -130,19 +130,20 @@ public class CLIThread extends Thread {
 		Scanner socketIn 		= new Scanner(socket.getInputStream());
 		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 		
+		System.out.println("RELEASE");
 		socketOut.println("RELEASE ");
 		
-		if (!socketIn.hasNext()) {
+		while (!socketIn.hasNext()) {
 			; // Do nothing.
 		}
-		else {
+		
 			rel = socketIn.nextLine();
 			if(!rel.equals("ACK")) {
 				socketIn.close();
 				socket.close();
 				return false;
 			}
-		}
+		
 		
 		/*
 		 * Close everything.
@@ -152,6 +153,7 @@ public class CLIThread extends Thread {
 		socketOut.close();
 		socket.close();
 		
+		System.out.println("Sending release to sites");
 		/*
 		 * Send RELEASE to other sites in your quorum.
 		 */
@@ -184,12 +186,12 @@ public class CLIThread extends Thread {
 		// Tell log you want log, include your site ID plus the two sites
 		// that gave you permission (your quorum).
 		
-		if (!socketIn.hasNext()) {
+		while (!socketIn.hasNext()) {
 			; // Do nothing.
 		}
-		else {
+		
 			log = socketIn.nextLine();
-		}
+		
 		
 		/*
 		 * Close everything.
