@@ -49,7 +49,7 @@ int main(void) {
   cout.put('\n');
   string result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Virginia.pem ec2-user@"+address[0]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Virginia.pem ubuntu@"+address[0]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
@@ -59,7 +59,7 @@ int main(void) {
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_California.pem ec2-user@"+address[1]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_California.pem ubuntu@"+address[1]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
@@ -69,7 +69,7 @@ int main(void) {
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Sydney.pem ec2-user@"+address[2]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Sydney.pem ubuntu@"+address[2]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
@@ -79,7 +79,7 @@ int main(void) {
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Singapore.pem ec2-user@"+address[3]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Singapore.pem ubuntu@"+address[3]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
@@ -89,7 +89,7 @@ int main(void) {
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_SaoPaolo.pem ec2-user@"+address[4]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_SaoPaolo.pem ubuntu@"+address[4]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
@@ -99,7 +99,7 @@ int main(void) {
   cout.put('\n');
   result = exec(cmd.c_str());
   cout << "> DELETING LOGS" << endl;
-  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Ireland.pem ec2-user@"+address[5]+" 'rm log.txt'";
+  cmd = "ssh -i /Users/olivertownsend/Desktop/Pem_Keys/YogiBearKey_Ireland.pem ubuntu@"+address[5]+" 'rm log.txt'";
   cout.write(cmd.c_str(), strlen(cmd.c_str()));
   cout.put('\n');
   result = exec(cmd.c_str());
