@@ -51,6 +51,8 @@ public class CommThread extends Thread{
 				Scanner socketIn 		= new Scanner(socket.getInputStream());
 				PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 
+				String sockMsg = socketIn.nextLine();
+				System.out.println("sockMsg: " + sockMsg);
 				boolean close = ParseCommand(socketIn.nextLine(), socketOut, socket);
 
 				socketOut.flush();
