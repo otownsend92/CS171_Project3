@@ -35,7 +35,7 @@ public class CLIThread extends Thread {
 
 	public void ReadFromSystemIn() throws InterruptedException, UnknownHostException, IOException {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Printing the file passed in:");
+		System.out.println("Enter Commands:");
 		while (sc.hasNextLine()) {
 			String input = sc.nextLine();
 			ParseInput(input);
@@ -50,7 +50,7 @@ public class CLIThread extends Thread {
 		String message = input.substring(input.indexOf(' ') + 1);
 
 		if (command.equals("Read")) {
-			System.out.println("Reading!!");
+			//System.out.println("Reading!!");
 			ReadFromLog();
 		}
 
@@ -58,7 +58,7 @@ public class CLIThread extends Thread {
 			if (message.length() > 140){
 				message = message.substring(0, 140);
 			}
-			System.out.println("Appending " + message + "$");
+			//System.out.println("Appending " + message + "$");
 			AppendToLog(message);
 		}
 	}
@@ -72,14 +72,14 @@ public class CLIThread extends Thread {
 		/*
 		 * Contact other sites to get quorum for read lock
 		 */
-		System.out.println("ReadFromLog");
+		//System.out.println("ReadFromLog");
 		boolean hasLock = ObtainReadLock();
 		while (!hasLock) {
 			Thread.sleep(500);	// Sleep half a second then try again.
 			hasLock = ObtainReadLock();
 		}
 
-		System.out.println("Quorum");
+		//System.out.println("Quorum");
 		/*
 		 * Once quorum is achieved, contact log site with 
 		 * quorum info. Receive log from log site and print
@@ -90,13 +90,13 @@ public class CLIThread extends Thread {
 			System.out.println("Current log:\n"+currentLog);
 		}
 
-		System.out.println("Releasing");
+		//System.out.println("Releasing");
 		/*
 		 * After printing, release lock:
 		 */
 		boolean released = ReleaseLock();
 		if (!released) {
-			System.out.println("Couldn't release read lock.");
+			//System.out.println("Couldn't release read lock.");
 		}
 	}
 
@@ -108,13 +108,13 @@ public class CLIThread extends Thread {
 		}
 
 		if(hasLock){
-			System.out.println("We have a lock!");
+			//System.out.println("We have a lock!");
 			RequestAppendToLog(message);
 		}
 
 		boolean released = ReleaseLock();
 		if (!released) {
-			System.out.println("Couldn't release read lock.");
+			//System.out.println("Couldn't release read lock.");
 		}
 	}
 
@@ -133,7 +133,7 @@ public class CLIThread extends Thread {
 		Scanner socketIn 		= new Scanner(socket.getInputStream());
 		PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 
-		System.out.println("RELEASE");
+		//System.out.println("RELEASE");
 		socketOut.println("RELEASE ");
 
 		while (!socketIn.hasNext()) {
@@ -156,7 +156,7 @@ public class CLIThread extends Thread {
 		socketOut.close();
 		socket.close();
 
-		System.out.println("Sending release to sites");
+		//System.out.println("Sending release to sites");
 		/*
 		 * Send RELEASE to other sites in your quorum.
 		 */
@@ -164,7 +164,7 @@ public class CLIThread extends Thread {
 			Socket siteSock 			= new Socket(IpAddrs[i - 1], RECV_PORT_NO);
 			PrintWriter socketOutSite 	= new PrintWriter(siteSock.getOutputStream(), true);
 
-			System.out.println("Release ME");
+			//System.out.println("Release ME");
 			socketOutSite.println("RELEASE " + myID);
 
 			// Close.
@@ -263,7 +263,7 @@ public class CLIThread extends Thread {
 				; // Do nothing.
 			}
 
-			System.out.println("Got Something");
+			//System.out.println("Got Something");
 
 			answer = socketIn.nextLine();
 			if (answer.equals("YES READ")) {
@@ -309,14 +309,14 @@ public class CLIThread extends Thread {
 			socketOut.println("WRITE LOCK " + myID); 	// Say you want a read lock
 			// and include your site ID
 
-			System.out.println("Waiting for Response");
+			//System.out.println("Waiting for Response");
 
 			while (!socketIn.hasNext()) {
 				; // Do nothing.
 			}
 
 			answer = socketIn.nextLine();
-			System.out.println("Answer is :" + answer);
+			//System.out.println("Answer is :" + answer);
 			if (answer.equals("YES WRITE")) {
 				count++;
 				has.add(i);
@@ -333,14 +333,14 @@ public class CLIThread extends Thread {
 		}
 
 		if (count != 3){
-			System.out.println("No write lock.");
+			//System.out.println("No write lock.");
 			for(int i : has){
 				ReleaseLite(i);
 			}
 			return false;
 		}
 		else{
-			System.out.println("Write lock.");
+			//System.out.println("Write lock.");
 			return true;
 		}
 

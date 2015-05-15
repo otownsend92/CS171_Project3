@@ -56,7 +56,7 @@ public class CommThread extends Thread{
 				PrintWriter socketOut 	= new PrintWriter(socket.getOutputStream(), true);
 				if(socketIn.hasNext()){
 					String sockMsg = socketIn.nextLine();
-					System.out.println("sockMsg: " + sockMsg);
+					//System.out.println("sockMsg: " + sockMsg);
 					close = ParseCommand(sockMsg, socketOut, socket);
 				}
 
@@ -75,11 +75,11 @@ public class CommThread extends Thread{
 
 	private boolean ParseCommand(String cmd, PrintWriter writer, Socket socket) throws IOException{
 		int site;
-		System.out.println("Command is " + cmd);
+		//System.out.println("Command is " + cmd);
 		if(cmd.substring(0, 7).equals("RELEASE")){
 			site = Integer.valueOf(cmd.substring(8, 9));
 			locks.setLock(site, SiteLocks.UNLOCKED);
-			System.out.println("Released " + String.valueOf(site));
+			//System.out.println("Released " + String.valueOf(site));
 			if(!requests.isEmpty()){
 				LockRequest r = requests.element();
 				if(r.getLock() == SiteLocks.READ){
@@ -114,25 +114,27 @@ public class CommThread extends Thread{
 			site = Integer.valueOf(cmd.substring(10, 11));
 			for(int i : quorum){
 				if(locks.getLock(i) == SiteLocks.WRITE){
-					requests.add(new LockRequest(SiteLocks.READ, site, socket));
-					return false;
+					//requests.add(new LockRequest(SiteLocks.READ, site, socket));
+					//return false;
+					return true;
 				}
 			}
 			locks.setLock(site, SiteLocks.READ);
 			writer.println("YES READ");
 		}
 		else if(cmd.substring(0, 10).equals("WRITE LOCK")){
-			System.out.println("Write Lock Attempt");
+			//System.out.println("Write Lock Attempt");
 			site = Integer.valueOf(cmd.substring(11, 12));
 			for(int i : quorum){
 				if(locks.getLock(i) > SiteLocks.UNLOCKED){
-					requests.add(new LockRequest(SiteLocks.WRITE, site, socket));
-					System.out.println("Write Lock Not Granted");
-					return false;
+					//requests.add(new LockRequest(SiteLocks.WRITE, site, socket));
+					//System.out.println("Write Lock Not Granted");
+					//return false;
+					return true;
 				}
 			}
 			locks.setLock(site, SiteLocks.WRITE);
-			System.out.println("Write Lock Granted");
+			//System.out.println("Write Lock Granted");
 			writer.println("YES WRITE");
 		}
 		return true;
