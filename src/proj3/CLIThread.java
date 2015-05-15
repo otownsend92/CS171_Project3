@@ -275,8 +275,17 @@ public class CLIThread extends Thread {
 			Thread.sleep(wait);
 			socketOut.println("READ LOCK " + myID); 	// Say you want a read lock
 			// and include your site ID
+			int count2 = 0;
+			boolean cont = true;
 			while (!socketIn.hasNext()) {
-				; // Do nothing.
+				count2++; // Do nothing.
+				if (count == 1000000){
+					cont = false;
+				}
+			}
+			
+			if(!cont){
+				break;
 			}
 
 			//System.out.println("Got Something");
@@ -329,8 +338,17 @@ public class CLIThread extends Thread {
 
 			//System.out.println("Waiting for Response");
 
+			int count2 = 0;
+			boolean cont = true;
 			while (!socketIn.hasNext()) {
-				; // Do nothing.
+				count2++; // Do nothing.
+				if (count == 1000000){
+					cont = false;
+				}
+			}
+			
+			if(!cont){
+				break;
 			}
 
 			answer = socketIn.nextLine();
