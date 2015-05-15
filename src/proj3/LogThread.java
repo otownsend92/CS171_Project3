@@ -69,9 +69,12 @@ public class LogThread extends Thread{
 			lock[3] = "shared";
 			lock[4] = info.substring(3, 4);
 			System.out.println("Site" + lock[4] + " " + lock[3] + " lock quorum " + lock[0] + ", " + lock[1] + " and " + lock[2]);
+			String temp = "";
 			for(String s : log){
-				writer.println(s);
+				temp += s;
+				temp += ", ";
 			}
+			writer.println(temp);
 		}
 		else if(command.equals("APPEND")){
 			String info = input.substring(input.indexOf(" ") + 1);
