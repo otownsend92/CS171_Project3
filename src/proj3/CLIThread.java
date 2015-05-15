@@ -282,6 +282,7 @@ public class CLIThread extends Thread {
 			}
 			
 			answer = socketIn.nextLine();
+			System.out.println("Answer is :" + answer);
 			if (answer.equals("YES WRITE")) {
 				count++;
 			}
