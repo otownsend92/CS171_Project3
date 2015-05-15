@@ -13,7 +13,7 @@ public class CLIThread extends Thread {
 	int LOG_RECV_PORT = 3050;
 	ArrayList<Integer> quorum;
 	private int myID;
-	private String[] IpAddrs = {
+	public static String[] IpAddrs = {
 			"xxx.xxx.xxx.xxx",
 			"xxx.xxx.xxx.xxx",
 			"xxx.xxx.xxx.xxx",

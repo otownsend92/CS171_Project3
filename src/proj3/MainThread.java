@@ -1,5 +1,9 @@
 package proj3;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -40,11 +44,58 @@ public class MainThread{
 	    return randomNum;
 	}
 	
-	public static void main(String[] args){
+	
+	/*
+	 * Firstline,siteid(1,2,3,4,5or6(forthelog))
+	 * Lines 2-7 contain the public IP and the port number 
+	 * of sites 1, 2, 3, 4, 5 and the log respectively.
+	 * Line 8 contains the private IP and the port number of the current instance.
+	 * Example, site 1 might have the following configuration file:
+	 * 1
+	 * 51.23.41.126 5352 
+	 * 51.23.41.182 5352 
+	 * 51.23.41.130 5352 
+	 * 51.23.41.237 5352 
+	 * 51.23.41.213 5352 
+	 * 51.23.41.164 5352 
+	 * 172.16.0.174 5352
+	 */
+	
+	public static void main(String[] args) throws IOException{
 		// Read from file and get side ID
-		// Pass ID to constructor for CLI thread to use
-		int ID = 1;
+		String path = "config.txt";
+		FileReader fr = new FileReader(path);
+		BufferedReader br = new BufferedReader(fr);
+
+		int myID 		= Integer.parseInt(br.readLine());
+		String site1 	= br.readLine();
+		String site2 	= br.readLine();
+		String site3 	= br.readLine();
+		String site4 	= br.readLine();
+		String site5 	= br.readLine();
+		String log 		= br.readLine();
+		String privIP 	= br.readLine();
 		
-		MainThread t = new MainThread(ID);
+		System.out.println("myID:   " + myID);
+		System.out.println("site1:  " + site1);
+		System.out.println("site2:  " + site2);
+		System.out.println("site3:  " + site3);
+		System.out.println("site4:  " + site4);
+		System.out.println("site5:  " + site5);
+		System.out.println("log:    " + log);
+		System.out.println("privIP: " + privIP);
+		
+		br.close();
+		fr.close();
+		
+		// Pass ID to constructor for CLI thread to use
+		MainThread t = new MainThread(myID);
+		
+		CLIThread.IpAddrs[0] = site1;
+		CLIThread.IpAddrs[1] = site2;
+		CLIThread.IpAddrs[2] = site3;
+		CLIThread.IpAddrs[3] = site4;
+		CLIThread.IpAddrs[4] = site5;
 	}
+
 }
